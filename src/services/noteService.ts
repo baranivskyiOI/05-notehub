@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { CreateNote, Note, NotesListResponse } from "../types/Note";
+import type { CreateNote, Note, NotesListResponse } from "../types/note";
 const apiKey = import.meta.env.VITE_NOTE_TOKEN;
 const token = `Bearer ${apiKey}`;
 
