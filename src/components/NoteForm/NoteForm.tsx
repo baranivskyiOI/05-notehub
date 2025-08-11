@@ -5,10 +5,15 @@ import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { createNote } from "../../services/noteService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { CreateNote } from "../../types/note";
 
 interface NoteFormProps {
   onClose: () => void;
+}
+
+export interface CreateNote {
+  title: string;
+  content: string;
+  tag: string;
 }
 
 interface FormValues {
@@ -29,7 +34,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
       .min(3, "Too Short!")
       .max(50, "Too Long!")
       .required("Required field"),
-    content: Yup.string().max(500, "Too Long!").required("Required field"),
+    content: Yup.string().max(500, "Too Long!"),
     tag: Yup.string().oneOf([
       "Todo",
       "Work",
@@ -72,7 +77,8 @@ export default function NoteForm({ onClose }: NoteFormProps) {
   const mutation = useMutation({
     mutationFn: (taskData: CreateNote) => createNote(taskData),
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      onClose();
     },
   });
 
@@ -82,7 +88,6 @@ export default function NoteForm({ onClose }: NoteFormProps) {
   ) => {
     mutation.mutate(values);
     formikHelpers.resetForm();
-    onClose();
   };
 
   return (

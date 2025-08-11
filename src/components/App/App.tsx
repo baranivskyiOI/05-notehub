@@ -2,7 +2,7 @@ import css from "./App.module.css";
 // import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { fetchNotes, searchNote } from "../../services/noteService";
+import { fetchNotes } from "../../services/noteService";
 import NoteList from "../NoteList/NoteList";
 import Pagination from "../Pagination/Pagination";
 import Modal from "../Modal/Modal";
@@ -10,10 +10,6 @@ import SearchBox from "../SearchBox/SearchBox";
 import { useDebouncedCallback } from "use-debounce";
 import ErrorMessage from "../Error/Error";
 import Loader from "../Loader/Loader";
-
-// const errorNotify = () => {
-//   toast.error("No movies found for your request.");
-// };
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,11 +21,8 @@ function App() {
   }, 300);
 
   const { data, isLoading, isSuccess, isError } = useQuery({
-    queryKey: ["tasks", currentPage, searchQuery],
-    queryFn: () =>
-      searchQuery
-        ? searchNote(searchQuery, currentPage)
-        : fetchNotes(currentPage),
+    queryKey: ["notes", currentPage, searchQuery],
+    queryFn: () => fetchNotes(searchQuery, currentPage),
     placeholderData: keepPreviousData,
   });
 
@@ -59,7 +52,7 @@ function App() {
         </header>
         {isError && <ErrorMessage />}
         {isLoading && <Loader />}
-        {data && !isLoading && <NoteList tasks={data.notes} />}
+        {data && !isLoading && <NoteList notes={data.notes} />}
       </div>
     </>
   );
