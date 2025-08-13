@@ -10,6 +10,7 @@ import SearchBox from "../SearchBox/SearchBox";
 import { useDebouncedCallback } from "use-debounce";
 import ErrorMessage from "../Error/Error";
 import Loader from "../Loader/Loader";
+import NoteForm from "../NoteForm/NoteForm";
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,7 +39,7 @@ function App() {
       <div className={css.app}>
         <header className={css.toolbar}>
           <SearchBox value={searchQuery} onSearch={updateSearchQuery} />
-          {isSuccess && (
+          {isSuccess && nbPages > 1 && (
             <Pagination
               page={currentPage}
               total={nbPages}
@@ -48,7 +49,11 @@ function App() {
           <button className={css.button} onClick={openModal}>
             Create Note +
           </button>
-          {isModalOpen && <Modal onClose={closeModal} />}
+          {isModalOpen && (
+            <Modal onClose={closeModal}>
+              <NoteForm onClose={closeModal} />
+            </Modal>
+          )}
         </header>
         {isError && <ErrorMessage />}
         {isLoading && <Loader />}
