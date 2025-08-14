@@ -1,4 +1,4 @@
-import { useEffect, useId } from "react";
+import { useId } from "react";
 import css from "./NoteForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import type { FormikHelpers } from "formik";
@@ -43,32 +43,6 @@ export default function NoteForm({ onClose }: NoteFormProps) {
       "Shopping",
     ]),
   });
-
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    const closeModalByClick = (e: MouseEvent) => {
-      if (
-        e.target instanceof HTMLElement &&
-        e.target.classList.contains("_backdrop_f2ytl_1")
-      ) {
-        onClose();
-      }
-    };
-
-    document.addEventListener("click", closeModalByClick);
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = "auto";
-      document.removeEventListener("click", closeModalByClick);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [onClose]);
 
   const fieldId = useId();
 
