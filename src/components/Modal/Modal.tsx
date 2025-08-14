@@ -1,6 +1,7 @@
 import type React from "react";
 import css from "./Modal.module.css";
 import { useEffect } from "react";
+import ReactDOM from "react-dom";
 
 interface ModalProps {
   onClose: () => void;
@@ -33,7 +34,7 @@ export default function Modal({ onClose, children }: ModalProps) {
     };
   }, [onClose]);
 
-  return (
+  return ReactDOM.createPortal(
     <>
       <div
         onClick={onClose}
@@ -45,6 +46,7 @@ export default function Modal({ onClose, children }: ModalProps) {
           {children}
         </div>
       </div>
-    </>
+    </>,
+    document.getElementById("modal")!
   );
 }
