@@ -11,26 +11,16 @@ interface ModalProps {
 export default function Modal({ onClose, children }: ModalProps) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    const closeModalByClick = (e: MouseEvent) => {
-      if (
-        e.target instanceof HTMLElement &&
-        e.target.classList.contains("_backdrop_f2ytl_1")
-      ) {
-        onClose();
-      }
-    };
-    document.addEventListener("click", closeModalByClick);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
 
-    document.addEventListener("keydown", handleKeyDown);
+    document.body.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.body.style.overflow = "auto";
-      document.body.removeEventListener("click", closeModalByClick);
-      document.removeEventListener("keydown", handleKeyDown);
+      document.body.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose]);
 
